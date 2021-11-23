@@ -43,9 +43,9 @@ class Dealer{
       let after = this.deck_cards.slice(chosen_card_index + 1);
 
       this.deck_cards = before.concat(after);
-      console.log(new_card)
-    }
 
+      this.calculate_card_total();
+    }
 
 
     calculate_card_total(){
@@ -53,39 +53,40 @@ class Dealer{
        let game_outcome = document.querySelector("#outcome");
 
        this.sort_cards_save_to_cards()
-       console.log(this.cards_dealt)
 
        for (let i = 0; i < this.cards_dealt.length; i++){
          if (['J', 'Q', 'K'].includes(this.cards_dealt[i])){
            card_total += 10
+           continue
           }
 
          if (this.cards_dealt[i]  == 'A'){
            if (card_total > 10){;
-             card = 1
+             card_total += 1
            }
-           else{;
-             card = 11
+           else{
+             card_total += 11
            }
+           continue
          }
+
+          // handle non-jqka cards
+          card_total += this.cards_dealt[i];
        }
 
-         this.card_total = card + this.card_total
-         console.log(this.card_total)
-
-         if (this.card_total > 21){
+         if (card_total > 21){
             game_outcome = "Bust";
             outcome.innerHTML = game_outcome
          }
-         if (this.card_total == 21){
+         if (card_total == 21){
             game_outcome = "You win!";
             outcome.innerHTML = game_outcome
          }
        }
 
     sort_cards_save_to_cards(){
-        non_aces = []
-        all_aces = []
+        let non_aces = [];
+        let all_aces = [];
 
         for (let i = 0; i < this.cards_dealt.length; i++){
           if (this.cards_dealt[i]  == 'A'){
@@ -96,7 +97,8 @@ class Dealer{
           }
         }
 
-        this.cards_dealt = non_aces.concat(all_aces)
+        this.cards_dealt = non_aces.concat(all_aces);
+        console.log(this.cards_dealt);
     }
 }
 
