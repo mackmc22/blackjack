@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<h1>Blackjack</h1>
+
+<h2>Player</h2>
+<div id="cards">Dealt Cards</div>
+
+<!--this will update if the player wins or busts-->
+<div id="outcome">Playing</div>
+
+<button id="hit">Hit</button>
+
+<button id="stand">Stand</button>
+
+
+<script>
+
+function getRandomArbitrary(min, max) {
+return Math.floor(Math.random() * (max - min) + min);
+}
+
+class Dealer{
+
+    constructor(){
+        this.deck_cards = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6 ,6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 'J', 'J', 'J', 'J', 'Q', 'Q', 'Q', 'Q', 'K', 'K', 'K', 'K', 'A', 'A', 'A', 'A'];
+        this.cards_dealt = [];
+
+        let hitButton = document.querySelector("#hit");
+        hitButton.onclick = () => this.deal();
+    }
+
+    deal(){
+      let new_card = document.querySelector("#cards");
+
+
+      let chosen_card_index = getRandomArbitrary(0,this.deck_cards.length);
+      let chosen_card = this.deck_cards[chosen_card_index];
+
+      this.cards_dealt.push(chosen_card);
+      cards.innerHTML = this.cards_dealt;
+
+      let before = this.deck_cards.slice(0, chosen_card_index);
+      let after = this.deck_cards.slice(chosen_card_index + 1);
+
+      this.deck_cards = before.concat(after);
+      console.log(new_card)
+    }
+
+
+
+    calculate_card_total(){
+       let card_total = 0;
+       let game_outcome = document.querySelector("#outcome");
+
+       this.sort_cards_save_to_cards()
+       console.log(this.cards_dealt)
+
+       for (let i = 0; i < this.cards_dealt.length; i++){
+         if (['J', 'Q', 'K'].includes(this.cards_dealt[i])){
+           card_total += 10
+          }
+
+         if (this.cards_dealt[i]  == 'A'){
+           if (card_total > 10){;
+             card = 1
+           }
+           else{;
+             card = 11
+           }
+         }
+       }
+
+         this.card_total = card + this.card_total
+         console.log(this.card_total)
+
+         if (this.card_total > 21){
+            game_outcome = "Bust";
+            outcome.innerHTML = game_outcome
+         }
+         if (this.card_total == 21){
+            game_outcome = "You win!";
+            outcome.innerHTML = game_outcome
+         }
+       }
+
+    sort_cards_save_to_cards(){
+        non_aces = []
+        all_aces = []
+
+        for (let i = 0; i < this.cards_dealt.length; i++){
+          if (this.cards_dealt[i]  == 'A'){
+            all_aces.push(this.cards_dealt[i]);
+          }
+          else{
+            non_aces.push(this.cards_dealt[i]);
+          }
+        }
+
+        this.cards_dealt = non_aces.concat(all_aces)
+    }
+}
+
+let the_dealer = new Dealer();
+
+
+//console.log(the_dealer.deal());
+
+
+</script>
+
