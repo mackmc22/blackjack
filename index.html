@@ -19,14 +19,32 @@ function getRandomArbitrary(min, max) {
 return Math.floor(Math.random() * (max - min) + min);
 }
 
+//dealer and player classes - 1 instance of each player, accesses game functions, holds cards dealt, holds score total
 class Dealer{
+    constructor(){
+    this.cards_dealt = [];
+    }
+}
+
+class Player{
+    constructor(){
+    this.cards_dealt = [];
+    }
+}
+
+
+//game handles deck and functions: dealing, hit, stand, sorting cards, calculate card total
+class Game{
 
     constructor(){
         this.deck_cards = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6 ,6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 'J', 'J', 'J', 'J', 'Q', 'Q', 'Q', 'Q', 'K', 'K', 'K', 'K', 'A', 'A', 'A', 'A'];
-        this.cards_dealt = [];
+        // moved to classes - this.cards_dealt = [];
 
         let hitButton = document.querySelector("#hit");
         hitButton.onclick = () => this.deal();
+
+        let hitButton = document.querySelector("#stand");
+        hitButton.onclick = () => this.stand();
     }
 
     deal(){
@@ -46,7 +64,10 @@ class Dealer{
       console.log(new_card)
     }
 
+    //calculate cards dealt, dealer plays, scores compared, winner declared
+    stand(){
 
+    }
 
     calculate_card_total(){
        let card_total = 0;
@@ -100,10 +121,10 @@ class Dealer{
     }
 }
 
-let the_dealer = new Dealer();
+let the_game = new Game();
 
 
-//console.log(the_dealer.deal());
+//console.log(the_game.deal());
 
 
 </script>
