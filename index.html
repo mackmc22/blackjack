@@ -3,7 +3,7 @@
 <h1>Blackjack</h1>
 
 <h2>Player</h2>
-<div id="cards">Dealt Cards</div>
+<div id="player_cards">Dealt Cards</div>
 
 <!--this will update if the player wins or busts-->
 <div id="outcome">Playing</div>
@@ -21,15 +21,33 @@ return Math.floor(Math.random() * (max - min) + min);
 
 //dealer and player classes - 1 instance of each player, accesses game functions, holds cards dealt, holds score total
 class Dealer{
-    constructor(){
+    constructor(game){
     this.cards_dealt = [];
+    this.dealer_score = 0
     }
 }
 
 class Player{
-    constructor(){
+    constructor(game){
     this.cards_dealt = [];
+    this.player_score = 0;
+    this.game = game;
+
+    let hitButton = document.querySelector("#hit");
+    hitButton.onclick = () => this.deal();
+
+    let standButton = document.querySelector("#stand");
+    standButton.onclick = () => this.stand();
     }
+
+    deal(){
+        let new_card = this.game.deal();
+        this.cards_dealt.push(new_card);
+
+        let player_cards = document.querySelector("#player_cards");
+        player_cards.innerHTML = this.cards_dealt
+    }
+
 }
 
 
@@ -40,28 +58,22 @@ class Game{
         this.deck_cards = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6 ,6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 'J', 'J', 'J', 'J', 'Q', 'Q', 'Q', 'Q', 'K', 'K', 'K', 'K', 'A', 'A', 'A', 'A'];
         // moved to classes - this.cards_dealt = [];
 
-        let hitButton = document.querySelector("#hit");
-        hitButton.onclick = () => this.deal();
 
-        let hitButton = document.querySelector("#stand");
-        hitButton.onclick = () => this.stand();
     }
 
     deal(){
-      let new_card = document.querySelector("#cards");
 
 
       let chosen_card_index = getRandomArbitrary(0,this.deck_cards.length);
       let chosen_card = this.deck_cards[chosen_card_index];
-
-      this.cards_dealt.push(chosen_card);
-      cards.innerHTML = this.cards_dealt;
 
       let before = this.deck_cards.slice(0, chosen_card_index);
       let after = this.deck_cards.slice(chosen_card_index + 1);
 
       this.deck_cards = before.concat(after);
 
+      return chosen_card
+    }
 
     //calculate cards dealt, dealer plays, scores compared, winner declared
     stand(){
@@ -70,7 +82,7 @@ class Game{
 
     }
 
-    calculate_card_total(){
+    calculate_card_total(cards){
        let card_total = 0;
        let game_outcome = document.querySelector("#outcome");
 
@@ -94,8 +106,10 @@ class Game{
 
           // handle non-jqka cards
           card_total += this.cards_dealt[i];
-       }
 
+          return card_total;
+       }
+        //needs to be moved to player class
          if (card_total > 21){
             game_outcome = "Bust";
             outcome.innerHTML = game_outcome
@@ -125,6 +139,8 @@ class Game{
 }
 
 let the_game = new Game();
+let player = new Player(the_game);
+let dealer = new Dealer(the_game);
 
 
 //console.log(the_game.deal());
