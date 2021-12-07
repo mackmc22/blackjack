@@ -4,6 +4,7 @@
 
 <h2>Player</h2>
 <div id="player_cards">Dealt Cards</div>
+<div id="dealer_cards"> Dealer's Cards</div>
 
 <!--this will update if the player wins or busts-->
 <div id="outcome">Playing</div>
@@ -25,126 +26,64 @@ class Dealer{
     this.cards_dealt = [];
     this.dealer_score = 0;
     this.game = game;
-    }
-
-    calculate_card_total(){
-        let this.dealer_score = this.game.calculate_card_total();
-        let game_outcome = document.querySelector("#outcome");
-
-        if (this.dealer_score > 21){
-                game_outcome = "Dealer busts, you win!";
-                outcome.innerHTML = game_outcome
-             }
-             if (this.dealer_score == 21){
-                game_outcome = "Dealer hit blackjack, you lose :-(";
-                outcome.innerHTML = game_outcome
-             }
-    }
-}
-
-class Player{
-    constructor(game){
-    this.cards_dealt = [];
-    this.player_score = 0;
-    this.game = game;
-
-
-    let hitButton = document.querySelector("#hit");
-    hitButton.onclick = () => this.deal();
 
     let standButton = document.querySelector("#stand");
     standButton.onclick = () => this.stand();
+    }
+
+    stand(){
+
+        this.deal();
+
+        While (true){
+            for (i
+                if (this.dealer_score
+        }
+
     }
 
     deal(){
         let new_card = this.game.deal();
         this.cards_dealt.push(new_card);
 
-        let player_cards = document.querySelector("#player_cards");
-        player_cards.innerHTML = this.cards_dealt
+        let dealer_cards = document.querySelector("#dealer_cards");
+        dealer_cards.innerHTML = this.cards_dealt;
+
+        this.calculate_card_total();
+
+
     }
 
     calculate_card_total(){
-        let this.player_score = this.game.calculate_card_total();
-        let game_outcome = document.querySelector("#outcome");
 
-            if (this.player_score > 21){
-                game_outcome = "Bust";
-                outcome.innerHTML = game_outcome
-             }
-             if (this.player_score == 21){
-                game_outcome = "Blackjack, you win!";
-                outcome.innerHTML = game_outcome
-             }
-    }
+        let card_total = 0;
 
-}
+        this.sort_cards_save_to_cards()
 
+        for (let i = 0; i < this.cards_dealt.length; i++){
+            if (['J', 'Q', 'K'].includes(this.cards_dealt[i])){
+                card_total += 10
+                continue
+            }
 
-//game handles deck and functions: dealing, hit, stand, sorting cards, calculate card total
-class Game{
+            if (this.cards_dealt[i]  == 'A'){
+                if (card_total > 10){
+                card_total += 1;
+                }
+                else{
+                card_total += 11;
+                }
+                continue
+            }
 
-    constructor(){
-        this.deck_cards = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6 ,6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 'J', 'J', 'J', 'J', 'Q', 'Q', 'Q', 'Q', 'K', 'K', 'K', 'K', 'A', 'A', 'A', 'A'];
-        // moved to classes - this.cards_dealt = [];
+            // handle non-jqka cards
+            card_total += this.cards_dealt[i];
 
+        }
 
-    }
-
-    deal(){
-
-
-      let chosen_card_index = getRandomArbitrary(0,this.deck_cards.length);
-      let chosen_card = this.deck_cards[chosen_card_index];
-
-      let before = this.deck_cards.slice(0, chosen_card_index);
-      let after = this.deck_cards.slice(chosen_card_index + 1);
-
-      this.deck_cards = before.concat(after);
-
-      return chosen_card
-    }
-
-    //calculate cards dealt, dealer plays, scores compared, winner declared
-    stand(player_score, dealer_score){
-        let player_score = this.player.player_score;
-        let dealer_score = this.dealer.dealer_score;
-
-      //stand needs to trigger the dealer to play...
-
+        this.dealer_score = card_total
 
     }
-
-    calculate_card_total(cards){
-       this.cards_dealt = cards;
-       let card_total = 0;
-
-
-       this.sort_cards_save_to_cards()
-
-       for (let i = 0; i < this.cards_dealt.length; i++){
-         if (['J', 'Q', 'K'].includes(this.cards_dealt[i])){
-           card_total += 10
-           continue
-          }
-
-         if (this.cards_dealt[i]  == 'A'){
-           if (card_total > 10){;
-             card_total += 1
-           }
-           else{
-             card_total += 11
-           }
-           continue
-         }
-
-          // handle non-jqka cards
-          card_total += this.cards_dealt[i];
-
-          return card_total;
-       }
-
-       }
 
     sort_cards_save_to_cards(cards){
         let non_aces = [];
@@ -160,7 +99,111 @@ class Game{
         }
 
         this.cards_dealt = non_aces.concat(all_aces);
-        console.log(this.cards_dealt);
+    }
+
+}
+
+class Player{
+    constructor(game){
+    this.cards_dealt = [];
+    this.player_score = 0;
+    this.game = game;
+
+
+    let hitButton = document.querySelector("#hit");
+    hitButton.onclick = () => this.deal();
+    }
+
+
+    deal(){
+        let new_card = this.game.deal();
+        this.cards_dealt.push(new_card);
+
+        let player_cards = document.querySelector("#player_cards");
+        player_cards.innerHTML = this.cards_dealt
+
+        this.calculate_card_total();
+    }
+
+    calculate_card_total(){
+
+        let card_total = 0;
+
+        this.sort_cards_save_to_cards()
+
+        for (let i = 0; i < this.cards_dealt.length; i++){
+            if (['J', 'Q', 'K'].includes(this.cards_dealt[i])){
+                card_total += 10
+                continue
+            }
+
+            if (this.cards_dealt[i]  == 'A'){
+                if (card_total > 10){
+                card_total += 1;
+                }
+                else{
+                card_total += 11;
+                }
+                continue
+            }
+
+            // handle non-jqka cards
+            card_total += this.cards_dealt[i];
+
+        }
+
+        let game_outcome = document.querySelector("#outcome");
+
+            if (card_total > 21){
+                game_outcome = "Bust";
+                outcome.innerHTML = game_outcome;
+             }
+             if (card_total == 21){
+                game_outcome = "Blackjack, you win!";
+                outcome.innerHTML = game_outcome;
+             }
+    }
+
+    sort_cards_save_to_cards(cards){
+        let non_aces = [];
+        let all_aces = [];
+
+        for (let i = 0; i < this.cards_dealt.length; i++){
+          if (this.cards_dealt[i]  == 'A'){
+            all_aces.push(this.cards_dealt[i]);
+          }
+          else{
+            non_aces.push(this.cards_dealt[i]);
+          }
+        }
+
+        this.cards_dealt = non_aces.concat(all_aces);
+    }
+
+}
+
+
+//game handles deck and functions: dealing, hit, stand, sorting cards, calculate card total
+class Game{
+
+    constructor(){
+        this.deck_cards = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6 ,6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 'J', 'J', 'J', 'J', 'Q', 'Q', 'Q', 'Q', 'K', 'K', 'K', 'K', 'A', 'A', 'A', 'A'];
+        // moved to classes - this.cards_dealt = [];
+
+    }
+
+    deal(){
+
+
+      let chosen_card_index = getRandomArbitrary(0,this.deck_cards.length);
+      let chosen_card = this.deck_cards[chosen_card_index];
+
+      let before = this.deck_cards.slice(0, chosen_card_index);
+      let after = this.deck_cards.slice(chosen_card_index + 1);
+
+      this.deck_cards = before.concat(after);
+
+      return chosen_card
     }
 }
 
