@@ -23,7 +23,22 @@ return Math.floor(Math.random() * (max - min) + min);
 class Dealer{
     constructor(game){
     this.cards_dealt = [];
-    this.dealer_score = 0
+    this.dealer_score = 0;
+    this.game = game;
+    }
+
+    calculate_card_total(){
+        let this.dealer_score = this.game.calculate_card_total();
+        let game_outcome = document.querySelector("#outcome");
+
+        if (this.dealer_score > 21){
+                game_outcome = "Dealer busts, you win!";
+                outcome.innerHTML = game_outcome
+             }
+             if (this.dealer_score == 21){
+                game_outcome = "Dealer hit blackjack, you lose :-(";
+                outcome.innerHTML = game_outcome
+             }
     }
 }
 
@@ -32,6 +47,7 @@ class Player{
     this.cards_dealt = [];
     this.player_score = 0;
     this.game = game;
+
 
     let hitButton = document.querySelector("#hit");
     hitButton.onclick = () => this.deal();
@@ -46,6 +62,20 @@ class Player{
 
         let player_cards = document.querySelector("#player_cards");
         player_cards.innerHTML = this.cards_dealt
+    }
+
+    calculate_card_total(){
+        let this.player_score = this.game.calculate_card_total();
+        let game_outcome = document.querySelector("#outcome");
+
+            if (this.player_score > 21){
+                game_outcome = "Bust";
+                outcome.innerHTML = game_outcome
+             }
+             if (this.player_score == 21){
+                game_outcome = "Blackjack, you win!";
+                outcome.innerHTML = game_outcome
+             }
     }
 
 }
@@ -76,15 +106,19 @@ class Game{
     }
 
     //calculate cards dealt, dealer plays, scores compared, winner declared
-    stand(){
+    stand(player_score, dealer_score){
+        let player_score = this.player.player_score;
+        let dealer_score = this.dealer.dealer_score;
 
-      this.calculate_card_total();
+      //stand needs to trigger the dealer to play...
+
 
     }
 
     calculate_card_total(cards){
+       this.cards_dealt = cards;
        let card_total = 0;
-       let game_outcome = document.querySelector("#outcome");
+
 
        this.sort_cards_save_to_cards()
 
@@ -109,18 +143,10 @@ class Game{
 
           return card_total;
        }
-        //needs to be moved to player class
-         if (card_total > 21){
-            game_outcome = "Bust";
-            outcome.innerHTML = game_outcome
-         }
-         if (card_total == 21){
-            game_outcome = "You win!";
-            outcome.innerHTML = game_outcome
-         }
+
        }
 
-    sort_cards_save_to_cards(){
+    sort_cards_save_to_cards(cards){
         let non_aces = [];
         let all_aces = [];
 
