@@ -33,14 +33,27 @@ class Dealer{
 
     stand(){
 
+    //when stand is pushed by player, dealer plays
+    //always start by dealing card (1 by 1)
         this.deal();
 
+    //continue until dealer score <16
         While (true){
-            for (i
-                if (this.dealer_score
+            for (let i = 0; i < this.cards_dealt.length; i++){
+                if (this.dealer_score < 16){
+                    this.deal();
+                }
+            }
+
+                if (this.dealer_score > 21){
+                    game_outcome = "Dealer busts, you win!";
+                    outcome.innerHTML = game_outcome;
+                    break;
+                }
         }
 
     }
+
 
     deal(){
         let new_card = this.game.deal();
