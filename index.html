@@ -167,7 +167,7 @@ class Player{
 
         }
 
-        let game_outcome = document.querySelector("#outcome");
+
 
             if (card_total > 21){
                 game_outcome = "Bust";
@@ -207,6 +207,8 @@ class Game{
 
     }
 
+    let game_outcome = document.querySelector("#outcome");
+
     deal(){
 
 
@@ -220,6 +222,7 @@ class Game{
 
       return chosen_card
     }
+
 }
 
 let the_game = new Game();
