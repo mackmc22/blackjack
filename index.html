@@ -7,7 +7,8 @@
 <div id="dealer_cards"> Dealer's Cards</div>
 
 <!--this will update if the player wins or busts-->
-<div id="outcome">Playing</div>
+<div id="player_outcome"> </div> <div id="dealer_outcome"> </div>
+
 
 <button id="hit">Hit</button>
 
@@ -38,20 +39,30 @@ class Dealer{
         this.deal();
 
 
+        let dealer_outcome = document.querySelector("#dealer_outcome");
+
 
     //continue until dealer score <16
         while (true){
             for (let i = 0; i < this.cards_dealt.length; i++){
+                if (this.dealer_score > 21){
+                    dealer_outcome = "Dealer busts, you win!";
+                    dealer_outcome.innerHTML = dealer_outcome;
+                    break;
+                }
+
                 if (this.dealer_score < 16){
                     this.deal();
+                    continue;
+                }
+
+                if (this.dealer_score >16){
+                    dealer_outcome = "IDK yet";
+                    dealer_outcome.innerHTML = dealer_outcome;
+                    break;
                 }
             }
 
-                if (this.dealer_score > 21){
-                    game_outcome = "Dealer busts, you win!";
-                    outcome.innerHTML = game_outcome;
-                    break;
-                }
         }
 
     }
@@ -65,7 +76,6 @@ class Dealer{
         dealer_cards.innerHTML = this.cards_dealt;
 
         this.calculate_card_total();
-
 
     }
 
@@ -167,15 +177,15 @@ class Player{
 
         }
 
-
+            let player_outcome = document.querySelector("#player_outcome");
 
             if (card_total > 21){
-                game_outcome = "Bust";
-                outcome.innerHTML = game_outcome;
+                player_outcome = "Bust";
+                player_outcome.innerHTML = player_outcome;
              }
              if (card_total == 21){
-                game_outcome = "Blackjack, you win!";
-                outcome.innerHTML = game_outcome;
+                player_outcome = "Blackjack, you win!";
+                player_outcome.innerHTML = player_outcome;
              }
     }
 
@@ -207,7 +217,7 @@ class Game{
 
     }
 
-    let game_outcome = document.querySelector("#outcome");
+
 
     deal(){
 
