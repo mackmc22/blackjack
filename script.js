@@ -39,9 +39,17 @@ class Dealer{
 
             if (this.dealer_score >16){
                 // TODO - handle comparing scores
-                dealer_outcome.innerHTML = "Must compare scores";
+                if (this.player.player_score <= this.dealer_score){
+                    dealer_outcome.innerHTML = "Dealer wins!";
+                    break;
+                }
 
-                break;
+                else{
+                    dealer_outcome.innerHTML = "You win!";
+                    break;
+                }
+
+
             }
         }
 
