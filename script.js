@@ -140,28 +140,8 @@ class Player{
 
     calculate_card_total(){
 
-        this.player_score = 0;
 
-        this.sort_cards_save_to_cards();
 
-        for (let i = 0; i < this.hand.length; i++){
-            if (['J', 'Q', 'K'].includes(this.hand[i])){
-                this.player_score += 10;
-                continue;
-            }
-
-            if (this.hand[i]  == 'A'){
-                if (this.player_score > 10){
-                this.player_score += 1;
-                }
-                else{
-                this.player_score += 11;
-                }
-                continue;
-            }
-
-            // handle non-jqka cards
-            this.player_score += this.hand[i];
         }
 
 
@@ -175,21 +155,7 @@ class Player{
              }
     }
 
-    sort_cards_save_to_cards(cards){
-        let non_aces = [];
-        let all_aces = [];
 
-        for (let i = 0; i < this.hand.length; i++){
-          if (this.hand[i]  == 'A'){
-            all_aces.push(this.hand[i]);
-          }
-          else{
-            non_aces.push(this.hand[i]);
-          }
-        }
-
-        this.hand = non_aces.concat(all_aces);
-    }
 
 }
 
@@ -221,6 +187,48 @@ class Game{
       return chosen_card
     }
 
+    calculate_card_total(hand){
+
+        this.score = 0;
+        this.hand = []
+
+        this.sort_cards_save_to_cards();
+
+        for (let i = 0; i < this.hand.length; i++){
+            if (['J', 'Q', 'K'].includes(this.hand[i])){
+                this.player_score += 10;
+                continue;
+            }
+
+            if (this.hand[i]  == 'A'){
+                if (this.score > 10){
+                this.score += 1;
+                }
+                else{
+                this.score += 11;
+                }
+                continue;
+            }
+
+            // handle non-jqka cards
+            this.score += this.hand[i];
+        }
+
+        sort_cards_save_to_cards(cards){
+        let non_aces = [];
+        let all_aces = [];
+
+        for (let i = 0; i < this.hand.length; i++){
+          if (this.hand[i]  == 'A'){
+            all_aces.push(this.hand[i]);
+          }
+          else{
+            non_aces.push(this.hand[i]);
+          }
+        }
+
+        this.hand = non_aces.concat(all_aces);
+    }
 }
 
 let the_game = new Game();
