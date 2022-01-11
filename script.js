@@ -66,52 +66,9 @@ class Dealer{
 
     }
 
-    calculate_card_total(){
-
-        let card_total = 0;
-
-        this.sort_cards_save_to_cards()
-
-        for (let i = 0; i < this.hand.length; i++){
-            if (['J', 'Q', 'K'].includes(this.hand[i])){
-                card_total += 10
-                continue
-            }
-
-            if (this.hand[i]  == 'A'){
-                if (card_total > 10){
-                card_total += 1;
-                }
-                else{
-                card_total += 11;
-                }
-                continue
-            }
-
-            // handle non-jqka cards
-            card_total += this.hand[i];
-
+    calculate_card_total(score){
+        this.dealer_score = this.game.calculate_card_total(this.hand);
         }
-
-        this.dealer_score = card_total
-        console.log('dealer', this.dealer_score)
-    }
-
-    sort_cards_save_to_cards(cards){
-        let non_aces = [];
-        let all_aces = [];
-
-        for (let i = 0; i < this.hand.length; i++){
-          if (this.hand[i]  == 'A'){
-            all_aces.push(this.hand[i]);
-          }
-          else{
-            non_aces.push(this.hand[i]);
-          }
-        }
-
-        this.hand = non_aces.concat(all_aces);
-    }
 
 }
 
@@ -138,21 +95,17 @@ class Player{
         console.log('player', this.player_score);
     }
 
-    calculate_card_total(){
+    calculate_card_total(score){
+        this.player_score = this.game.calculate_card_total(this.hand);
 
+        let player_outcome = document.querySelector("#player_outcome");
 
-
-        }
-
-
-            let player_outcome = document.querySelector("#player_outcome");
-
-            if (this.player_score > 21){
-                player_outcome.innerHTML = "Bust";
-             }
-             if (this.player_score == 21){
-                player_outcome.innerHTML = "Blackjack, you win!";
-             }
+        if (this.player_score > 21){
+            player_outcome.innerHTML = "Bust";
+         }
+         if (this.player_score == 21){
+            player_outcome.innerHTML = "Blackjack, you win!";
+         }
     }
 
 
@@ -163,11 +116,12 @@ class Player{
 //game handles deck and functions: dealing, hit, stand, sorting cards, calculate card total
 class Game{
 
-    constructor(){
+    constructor(player, dealer){
         //this.deck_cards = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6 ,6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 'J', 'J', 'J', 'J', 'Q', 'Q', 'Q', 'Q', 'K', 'K', 'K', 'K', 'A', 'A', 'A', 'A'];
         this.deck_cards = [10, 'J', 9, 8];
+        this.player = player;
+        this.dealer = dealer;
         // moved to classes - this.hand = [];
-
 
     }
 
@@ -188,9 +142,8 @@ class Game{
     }
 
     calculate_card_total(hand){
-
         this.score = 0;
-        this.hand = []
+        this.hand = [];
 
         this.sort_cards_save_to_cards();
 
@@ -211,10 +164,11 @@ class Game{
             }
 
             // handle non-jqka cards
-            this.score += this.hand[i];
+            return this.score += this.hand[i];
         }
+    }
 
-        sort_cards_save_to_cards(cards){
+    sort_cards_save_to_cards(){
         let non_aces = [];
         let all_aces = [];
 
@@ -229,11 +183,15 @@ class Game{
 
         this.hand = non_aces.concat(all_aces);
     }
+
+
+
 }
 
 let the_game = new Game();
 let player = new Player(the_game);
 let dealer = new Dealer(the_game, player);
+
 
 
 
