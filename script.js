@@ -17,14 +17,11 @@ class Dealer{
     stand(){
 
         //when stand is pushed by player, dealer plays
-        //always start by dealing card (1 by 1)
         this.deal();
-
 
         let dealer_outcome = document.querySelector("#dealer_outcome");
 
-
-        //continue until dealer score <16
+        //continue until dealer score >=16
         while (true){
 
             if (this.dealer_score > 21){
@@ -38,22 +35,22 @@ class Dealer{
             }
 
             if (this.dealer_score >16){
-                if (this.player.player_score <= this.dealer_score){
+                if (this.player.player_score < this.dealer_score){
                     dealer_outcome.innerHTML = "Dealer wins!";
                     break;
                 }
-
+                if (this.player.player_score == this.dealer_score){
+                    dealer_outcome.innerHTML = "Tie goes to the dealer";
+                    break;
+                }
                 else{
                     dealer_outcome.innerHTML = "You win!";
                     break;
                 }
-
-
             }
         }
 
     }
-
 
     deal(){
         let new_card = this.game.deal();
@@ -63,13 +60,12 @@ class Dealer{
         dealer_cards.innerHTML = this.hand;
 
         this.calculate_card_total();
-
+        console.log('dealer', this.dealer_score);
     }
 
     calculate_card_total(score){
         this.dealer_score = this.game.calculate_card_total(this.hand);
         }
-
 }
 
 class Player{
@@ -107,9 +103,6 @@ class Player{
             player_outcome.innerHTML = "Blackjack, you win!";
          }
     }
-
-
-
 }
 
 
@@ -117,20 +110,17 @@ class Player{
 class Game{
 
     constructor(player, dealer){
-        //this.deck_cards = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6 ,6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 'J', 'J', 'J', 'J', 'Q', 'Q', 'Q', 'Q', 'K', 'K', 'K', 'K', 'A', 'A', 'A', 'A'];
-        this.deck_cards = [10, 'J', 9, 8];
+        this.deck_cards = [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6 ,6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 'J', 'J', 'J', 'J', 'Q', 'Q', 'Q', 'Q', 'K', 'K', 'K', 'K', 'A', 'A', 'A', 'A'];
+       // this.deck_cards = [10, 'K', 8, 'A' ];
         this.player = player;
         this.dealer = dealer;
-        // moved to classes - this.hand = [];
-
     }
 
 
     deal(){
 
-
-      //let chosen_card_index = getRandomArbitrary(0,this.deck_cards.length);
-      let chosen_card_index = 0;
+      let chosen_card_index = getRandomArbitrary(0,this.deck_cards.length);
+      //let chosen_card_index = 0;
       let chosen_card = this.deck_cards[chosen_card_index];
 
       let before = this.deck_cards.slice(0, chosen_card_index);
@@ -143,13 +133,14 @@ class Game{
 
     calculate_card_total(hand){
         this.score = 0;
-        this.hand = [];
+        this.hand = hand;
 
         this.sort_cards_save_to_cards();
+        console.log(this.hand);
 
         for (let i = 0; i < this.hand.length; i++){
             if (['J', 'Q', 'K'].includes(this.hand[i])){
-                this.player_score += 10;
+                this.score += 10;
                 continue;
             }
 
@@ -163,12 +154,13 @@ class Game{
                 continue;
             }
 
-            // handle non-jqka cards
-            return this.score += this.hand[i];
+            this.score += this.hand[i];
         }
+        // handle non-jqka cards
+        return this.score;
     }
 
-    sort_cards_save_to_cards(){
+    sort_cards_save_to_cards(hand){
         let non_aces = [];
         let all_aces = [];
 
@@ -183,9 +175,6 @@ class Game{
 
         this.hand = non_aces.concat(all_aces);
     }
-
-
-
 }
 
 let the_game = new Game();
