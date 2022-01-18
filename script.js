@@ -32,9 +32,7 @@ class Dealer{
             if (this.dealer_score < 16){
                 this.deal();
                 continue;
-            }
-
-            if (this.dealer_score >16){
+            } else {
                 if (this.player.player_score < this.dealer_score){
                     dealer_outcome.innerHTML = "Dealer wins!";
                     break;
