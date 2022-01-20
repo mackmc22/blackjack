@@ -130,31 +130,31 @@ class Game{
     }
 
     calculate_card_total(hand){
-        this.score = 0;
+        let score = 0;
 
         this.sort_cards_save_to_cards(hand);
         console.log(hand);
 
         for (let i = 0; i < hand.length; i++){
             if (['J', 'Q', 'K'].includes(hand[i])){
-                this.score += 10;
+                score += 10;
                 continue;
             }
 
             if (hand[i]  == 'A'){
-                if (this.score > 10){
-                this.score += 1;
+                if (score > 10){
+                score += 1;
                 }
                 else{
-                this.score += 11;
+                score += 11;
                 }
                 continue;
             }
 
-            this.score += hand[i];
+            score += hand[i];
         }
         // handle non-jqka cards
-        return this.score;
+        return score;
     }
 
     sort_cards_save_to_cards(hand){
