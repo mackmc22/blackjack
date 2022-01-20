@@ -130,48 +130,47 @@ class Game{
     }
 
     calculate_card_total(hand){
-        this.score = 0;
-        this.hand = hand;
+        let score = 0;
 
-        this.sort_cards_save_to_cards();
-        console.log(this.hand);
+        this.sort_cards_save_to_cards(hand);
+        console.log(hand);
 
-        for (let i = 0; i < this.hand.length; i++){
-            if (['J', 'Q', 'K'].includes(this.hand[i])){
-                this.score += 10;
+        for (let i = 0; i < hand.length; i++){
+            if (['J', 'Q', 'K'].includes(hand[i])){
+                score += 10;
                 continue;
             }
 
-            if (this.hand[i]  == 'A'){
-                if (this.score > 10){
-                this.score += 1;
+            if (hand[i]  == 'A'){
+                if (score > 10){
+                score += 1;
                 }
                 else{
-                this.score += 11;
+                score += 11;
                 }
                 continue;
             }
 
-            this.score += this.hand[i];
+            score += hand[i];
         }
         // handle non-jqka cards
-        return this.score;
+        return score;
     }
 
     sort_cards_save_to_cards(hand){
         let non_aces = [];
         let all_aces = [];
 
-        for (let i = 0; i < this.hand.length; i++){
-          if (this.hand[i]  == 'A'){
-            all_aces.push(this.hand[i]);
+        for (let i = 0; i < hand.length; i++){
+          if (hand[i]  == 'A'){
+            all_aces.push(hand[i]);
           }
           else{
-            non_aces.push(this.hand[i]);
+            non_aces.push(hand[i]);
           }
         }
 
-        this.hand = non_aces.concat(all_aces);
+        hand = non_aces.concat(all_aces);
     }
 }
 
