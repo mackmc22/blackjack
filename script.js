@@ -175,7 +175,7 @@ class Game {
   calculate_card_total(hand) {
     let score = 0;
 
-    this.sort_cards_save_to_cards(hand);
+    hand = this.sort_cards_save_to_cards(hand);
     console.log(hand);
 
     for (let i = 0; i < hand.length; i++) {
@@ -211,10 +211,51 @@ class Game {
       }
     }
 
-    hand = non_aces.concat(all_aces);
+    return non_aces.concat(all_aces);
   }
 }
 
 let the_game = new Game();
 let player = new Player(the_game);
 let dealer = new Dealer(the_game, player);
+
+
+function compareLists(a, b) {
+    if (a.length != b.length) {
+        return false;
+    }
+
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] != b[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+// Expect that aces are moved to the end
+let input = the_game.sort_cards_save_to_cards(['A', 2]);
+let output = [2, 'A'];
+console.assert(compareLists(input, output));
+
+// Expect empty hand to be returned when empty hand is passed in
+let sort_empty = the_game.sort_cards_save_to_cards([]);
+let get_empty = [];
+console.assert(compareLists(input, output));
+
+// Expect to be dealt the card from the deck - this is not right... idk what I was doing...
+//let the_deck = the_game.deck_cards = ['A']
+//let the_hand = the_game.deal()
+//console.assert(compareLists(the_deck, the_hand));
+
+
+// Expect to be dealt same cards in order
+let initial_cards = the_game.deck_cards = [2, 8];
+let dealt_cards = [];
+
+for (let i=0; i< initial_cards.length; i++){
+    dealt_cards.push(the_game.deal());
+}
+
+console.assert(compareLists(initial_cards, dealt_cards))
