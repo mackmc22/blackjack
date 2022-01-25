@@ -242,20 +242,24 @@ console.assert(compareLists(input, output));
 // Expect empty hand to be returned when empty hand is passed in
 let sort_empty = the_game.sort_cards_save_to_cards([]);
 let get_empty = [];
-console.assert(compareLists(input, output));
+console.assert(compareLists(sort_empty, get_empty));
 
-// Expect to be dealt the card from the deck - this is not right... idk what I was doing...
-//let the_deck = the_game.deck_cards = ['A']
-//let the_hand = the_game.deal()
-//console.assert(compareLists(the_deck, the_hand));
+// Expect to be dealt the card from the deck
+//cannot compare to the deck of cards because the deal function removes the card from the list
+the_game.deck_cards = ["A"]
+let the_hand = the_game.deal()
+console.assert(compareLists('A', the_hand));
+
+//Expect card from set deck to be card at index 1
+the_game.deck_cards = ['J', 3, 10]
+the_game.deal.chosen_card_index = 1
+let card_at_index = the_game.deal()
+console.assert(compareLists(3, card_at_index))
+
+//Expect new deck of cards to have had the chosen card removed
+the_game.deck_cards = [4, 6, 10, 'J']
+the_game.deal.chosen_card_index = 2
+the_game.deal()
+console.assert(compareLists([4, 6, 'J'], the_game.deck_cards))
 
 
-// Expect to be dealt same cards in order
-let initial_cards = the_game.deck_cards = [2, 8];
-let dealt_cards = [];
-
-for (let i=0; i< initial_cards.length; i++){
-    dealt_cards.push(the_game.deal());
-}
-
-console.assert(compareLists(initial_cards, dealt_cards))
