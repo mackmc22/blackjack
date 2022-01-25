@@ -254,7 +254,7 @@ console.assert(compareLists('A', the_hand));
 the_game.deck_cards = ['J', 3, 10]
 the_game.deal.chosen_card_index = 1
 let card_at_index = the_game.deal()
-console.assert(compareLists(3, card_at_index))
+console.assert(compareLists(3 == card_at_index))
 
 //Expect new deck of cards to have had the chosen card removed
 the_game.deck_cards = [4, 6, 10, 'J']
