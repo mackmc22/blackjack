@@ -17,7 +17,7 @@ hitButton.onclick = () => deal();
 
 
 function restart_game(){
-    axios.put("http://127.0.0.1:8000/api/game/234/restart")
+    axios.delete("http://127.0.0.1:8000/api/game/234/restart")
     }
 let restartButton = document.querySelector("#restart");
 restartButton.onclick = () => restart_game();
