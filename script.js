@@ -9,10 +9,8 @@ function deal() {
             player_cards.innerHTML = data.hand;
             let player_score = document.querySelector("#player_score")
             player_score.innerHTML = data.score;
-            let player_outcome = document.querySelector("#player_outcome")
-            player_outcome.innerHTML = data.score;
-            let dealer_outcome = document.querySelector("#dealer_outcome")
-            dealer_outcome.innerHTML = data.score;
+            let outcome = document.querySelector("#outcome")
+            outcome.innerHTML = data.winner;
         })
 }
 
@@ -33,8 +31,10 @@ function stand(){
         .then(data => {
             let dealer_cards = document.querySelector("#dealer_cards");
             dealer_cards.innerHTML = data.hand;
-            player_outcome.innerHTML = data.score;
-            let dealer_outcome = document.querySelector("#dealer_outcome")
-            dealer_outcome.innerHTML = data.score;
+            let outcome = document.querySelector("#outcome")
+            outcome.innerHTML = data.winner;
         })
 }
+
+let standButton = document.querySelector("#stand");
+standButton.onclick = () => stand();
